@@ -45,7 +45,7 @@ def respond():
            #Get Response from chat GPT
            chatGPTReply = chat_gpt(text)
            #Send Chat GPT Response
-           bot.sendMessage(chat_id=chat_id, text="Error: Please try again", reply_to_message_id=msg_id)
+           bot.sendMessage(chat_id=chat_id, text=chatGPTReply, reply_to_message_id=msg_id)
        except Exception:
            # if things went wrong
            bot.sendMessage(chat_id=chat_id, text="Error: Please try again", reply_to_message_id=msg_id)
@@ -53,7 +53,7 @@ def respond():
    return 'ok'
 
 #Call this url once for telegram webhook 
-@app.route('/set_webhook', methods=['GET', 'POST'])
+@app.route('/telegram_webhook', methods=['GET', 'POST'])
 def set_webhook():
    s = bot.setWebhook('{URL}{HOOK}'.format(URL=BotURL, HOOK=TOKEN))
    if s:
@@ -63,13 +63,11 @@ def set_webhook():
 
 @app.route('/')
 def index():
-   return chat_gpt("Hi")
+   return ''
 
+#Query from chatGPT using chatGPT API
 def chat_gpt(message):
-  return "how are you?"
-  '''
-  messages = [ {"role": "system", "content":  
-              "You are a intelligent assistant."} ] 
+  messages = [ {"role": "system", "content":"" } ] 
   messages.append(
          {"role": "user", "content": message},
     )
@@ -81,7 +79,7 @@ def chat_gpt(message):
   reply = chat.choices[0].message.content 
 
   return reply
-  '''
+
 
 if __name__ == '__main__':
    app.run(threaded=True)
